@@ -1,6 +1,7 @@
 import { Box, Link, Typography } from "@mui/material";
 import { cores, alturaCabecalho } from "../tema";
 import { menu } from "../dados";
+import BonecoAndando from "./BonecoAndando";
 
 // Header fixo: fica sempre no topo da tela, mesmo quando a página rola.
 function Cabecalho() {
@@ -19,8 +20,13 @@ function Cabecalho() {
         borderBottom: `1px solid ${cores.linha}`,
       }}
     >
+      {/* O boneco anda por cima da linha de baixo do header, passando por trás do logo e do menu */}
+      <BonecoAndando />
+
       <Box
         sx={{
+          position: "relative",
+          zIndex: 1, // fica na frente do boneco
           maxWidth: 1440,
           mx: "auto",
           height: "100%",

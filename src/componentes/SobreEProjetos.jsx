@@ -3,7 +3,7 @@ import { cores } from "../tema";
 import { fotos, habilidades, projetos } from "../dados";
 import Rotulo from "./Rotulo";
 
-// ---------- Uma foto (por enquanto, só um espaço reservado) ----------
+// ---------- Uma foto (se não tiver imagem, mostra um espaço reservado) ----------
 function CartaoFoto({ foto }) {
   return (
     <Box
@@ -16,25 +16,57 @@ function CartaoFoto({ foto }) {
         display: { xs: foto.destaque ? "block" : "none", md: "block" }, // no celular, só a do meio
       }}
     >
+      {/* Se tiver foto: ela preenche o quadrado inteiro */}
+      {foto.imagem && (
+        <>
+          <Box
+            component="img"
+            src={foto.imagem}
+            alt="Foto de Eduardo Mariano"
+            sx={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover", // preenche o quadrado sem esticar a foto
+              objectPosition: "center 15%", // corta mais embaixo, para o rosto não ser cortado
+            }}
+          />
+
+          {/* Sombra escura em cima e embaixo, para o número e a legenda continuarem legíveis */}
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to bottom, rgba(9, 9, 9, 0.65) 0%, transparent 22%, transparent 72%, rgba(9, 9, 9, 0.8) 100%)",
+            }}
+          />
+        </>
+      )}
+
       <Box sx={{ position: "absolute", top: 20, left: 22 }}>
         <Rotulo tamanho={12} espacamento={0}>
           {foto.numero}
         </Rotulo>
       </Box>
 
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Rotulo cor={cores.textoFraco} tamanho={11}>
-          SUA FOTO AQUI
-        </Rotulo>
-      </Box>
+      {/* Se não tiver foto: mostra o texto "SUA FOTO AQUI" */}
+      {!foto.imagem && (
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Rotulo cor={cores.textoFraco} tamanho={11}>
+            SUA FOTO AQUI
+          </Rotulo>
+        </Box>
+      )}
 
       <Box sx={{ position: "absolute", bottom: 20, left: 22 }}>
         <Rotulo tamanho={9} espacamento={1}>

@@ -1,3 +1,5 @@
+import fotoMeio from "./assets/foto-meio.jpg";
+
 // Textos e links do site.
 // Quando você pedir alterações de conteúdo, é aqui que mexemos.
 
@@ -8,7 +10,7 @@ export const redesSociais = [
 ];
 
 // As palavras que ficam se alternando no nome grande da abertura.
-export const palavrasDoNome = ["EDUARDO", "MARIANO"];
+export const palavrasDoNome = ["EDUARDO", "MARIANO", "DEV"];
 
 export const menu = [
   { texto: "SOBRE", destino: "#sobre" },
@@ -16,10 +18,12 @@ export const menu = [
   { texto: "CONTATO", destino: "#contato" },
 ];
 
+// imagem: a foto que aparece no quadrado. Quando for null, o quadrado mostra "SUA FOTO AQUI".
+// Para colocar uma foto nova: salve em src/assets, importe lá em cima e troque o null.
 export const fotos = [
-  { numero: "01", legenda: "UM POUCO DE MIM", destaque: false },
-  { numero: "02", legenda: "NOS BASTIDORES", destaque: true }, // a do meio é maior
-  { numero: "03", legenda: "FORA DA TELA", destaque: false },
+  { numero: "01", legenda: "UM POUCO DE MIM", destaque: false, imagem: null },
+  { numero: "02", legenda: "NOS BASTIDORES", destaque: true, imagem: fotoMeio }, // a do meio é maior
+  { numero: "03", legenda: "FORA DA TELA", destaque: false, imagem: null },
 ];
 
 export const habilidades = [

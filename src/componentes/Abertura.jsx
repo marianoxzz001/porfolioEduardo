@@ -89,25 +89,33 @@ function Abertura() {
           {palavraAtual}
         </Typography>
 
-        {/* Subtítulo: fica logo abaixo do nome, mais para a direita (como no Figma) */}
-        <Box sx={{ position: "absolute", top: "100%", left: "72%", whiteSpace: "nowrap" }}>
-          <Rotulo cor={cores.textoFraco} tamanho={11} espacamento={2.3}>
-            DESENVOLVEDOR
-          </Rotulo>
-        </Box>
-
-        {/* Cursor piscando, abaixo do subtítulo */}
+        {/* Subtítulo: fica logo abaixo do nome, mais para a direita (como no Figma).
+            O cursor piscando fica do lado do texto, na mesma linha. */}
         <Box
           sx={{
             position: "absolute",
-            top: "calc(100% + 19px)",
-            left: "77%",
-            width: 3,
-            height: 39,
-            bgcolor: cores.textoMedio,
-            animation: `${piscar} 1s step-end infinite`,
+            top: "100%",
+            left: "72%",
+            display: "flex", // deixa o texto e o cursor lado a lado
+            alignItems: "center",
+            gap: "3px",
+            whiteSpace: "nowrap",
           }}
-        />
+        >
+          <Rotulo cor={cores.textoFraco} tamanho={11} espacamento={2.3}>
+            DESENVOLVEDOR
+          </Rotulo>
+
+          {/* Cursor piscando */}
+          <Box
+            sx={{
+              width: 2,
+              height: 14,
+              bgcolor: cores.textoMedio,
+              animation: `${piscar} 1s step-end infinite`,
+            }}
+          />
+        </Box>
       </Box>
 
       {/* ---------- Redes sociais em coluna, no canto de baixo à esquerda ---------- */}
