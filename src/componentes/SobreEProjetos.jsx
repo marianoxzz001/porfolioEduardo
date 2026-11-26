@@ -1,13 +1,36 @@
-import { Box, Typography } from "@mui/material";
+import { useState } from "react";
+import { Box, Dialog, Typography } from "@mui/material";
 import { cores } from "../tema";
 import { fotos, habilidades, projetos } from "../dados";
+import { textosFotos } from "../textosFotos";
 import Rotulo from "./Rotulo";
 
 // ---------- Uma foto (se não tiver imagem, mostra um espaço reservado) ----------
-function CartaoFoto({ foto }) {
+// Passando o mouse: a foto dá um zoom. Clicando: chama onAbrir, que abre o texto.
+function CartaoFoto({ foto, onAbrir }) {
   return (
     <Box
+      role="button"
+      tabIndex={0}
+      aria-label={`Ler o texto: ${foto.legenda}`}
+      onClick={onAbrir}
+      onKeyDown={(evento) => {
+        // Também funciona com o teclado (Enter ou Espaço)
+        if (evento.key === "Enter" || evento.key === " ") {
+          evento.preventDefault();
+          onAbrir();
+        }
+      }}
       sx={{
+        cursor: "pointer",
+        transition: "transform 0.35s ease, border-color 0.35s ease",
+        "&:hover, &:focus-visible": {
+          transform: "scale(1.07)", // o "zoomzinho": 1.07 = 7% maior. Mude aqui se quiser mais ou menos
+          zIndex: 2, // fica por cima das fotos vizinhas
+          borderColor: cores.textoMuitoFraco,
+          outline: "none",
+        },
+        "@media (prefers-reduced-motion: reduce)": { transition: "none" },
         position: "relative",
         width: foto.destaque ? 284 : 244,
         height: foto.destaque ? 356 : 272,
@@ -77,6 +100,97 @@ function CartaoFoto({ foto }) {
   );
 }
 
+// ---------- Janela que abre ao clicar numa foto: mostra o texto escrito em textosFotos.js ----------
+function JanelaDaFoto({ foto, aoFechar }) {
+  const conteudo = foto ? textosFotos[foto.numero] : null;
+
+  return (
+    <Dialog
+      open={Boolean(foto)}
+      onClose={aoFechar}
+      maxWidth="sm"
+      fullWidth
+      scroll="paper"
+      PaperProps={{
+        sx: {
+          bgcolor: cores.fotoFundo,
+          backgroundImage: "none",
+          border: `1px solid ${cores.fotoBorda}`,
+          borderRadius: 0,
+          m: 2,
+        },
+      }}
+    >
+      {foto && (
+        <Box sx={{ position: "relative" }}>
+          {/* Foto no topo da janela (só se tiver imagem) */}
+          {foto.imagem && (
+            <Box
+              component="img"
+              src={foto.imagem}
+              alt={foto.legenda}
+              sx={{
+                display: "block",
+                width: "100%",
+                height: { xs: 220, md: 300 },
+                objectFit: "cover",
+                objectPosition: "center 15%",
+              }}
+            />
+          )}
+
+          {/* Botão de fechar */}
+          <Box
+            component="button"
+            type="button"
+            onClick={aoFechar}
+            aria-label="Fechar"
+            sx={{
+              position: "absolute",
+              top: 12,
+              right: 12,
+              width: 36,
+              height: 36,
+              border: `1px solid ${cores.fotoBorda}`,
+              bgcolor: "rgba(9, 9, 9, 0.7)",
+              color: cores.textoForte,
+              fontSize: 16,
+              cursor: "pointer",
+              "&:hover": { bgcolor: cores.fundo },
+            }}
+          >
+            ✕
+          </Box>
+
+          <Box sx={{ p: { xs: 3, md: 4 } }}>
+            <Rotulo>
+              {foto.numero} / {foto.legenda}
+            </Rotulo>
+            <Typography
+              component="h3"
+              sx={{ fontSize: { xs: 26, md: 32 }, fontWeight: 600, letterSpacing: "-1px", mt: 2 }}
+            >
+              {conteudo?.titulo || foto.legenda}
+            </Typography>
+            {/* pre-line: respeita os parágrafos que você escreveu em textosFotos.js */}
+            <Typography
+              sx={{
+                fontSize: 16,
+                lineHeight: "26px",
+                color: cores.textoClaro,
+                mt: 3,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {conteudo?.texto || "Texto em breve."}
+            </Typography>
+          </Box>
+        </Box>
+      )}
+    </Dialog>
+  );
+}
+
 // ---------- Um card de projeto ----------
 function CartaoProjeto({ projeto }) {
   return (
@@ -113,6 +227,9 @@ function CartaoProjeto({ projeto }) {
 
 // ---------- Seção completa: fotos + sobre mim + habilidades + projetos ----------
 function SobreEProjetos() {
+  // Guarda qual foto está aberta (null = nenhuma)
+  const [fotoAberta, setFotoAberta] = useState(null);
+
   return (
     <Box
       id="sobre"
@@ -125,9 +242,11 @@ function SobreEProjetos() {
       {/* Três fotos lado a lado (a do meio é maior) */}
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 3, mt: 6 }}>
         {fotos.map((foto) => (
-          <CartaoFoto key={foto.numero} foto={foto} />
+          <CartaoFoto key={foto.numero} foto={foto} onAbrir={() => setFotoAberta(foto)} />
         ))}
       </Box>
+
+      <JanelaDaFoto foto={fotoAberta} aoFechar={() => setFotoAberta(null)} />
 
       {/* Título grande */}
       <Typography
