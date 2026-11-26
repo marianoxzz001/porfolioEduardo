@@ -4,7 +4,7 @@
 export const redesSociais = [
   { nome: "GitHub", link: "https://github.com/marianoxzz001" },
   { nome: "LinkedIn", link: "https://www.linkedin.com/in/emariano-dev/" },
-  { nome: "Instagram", link: "#" }, // ainda sem link definido
+  { nome: "Instagram", link: "https://www.instagram.com/mariano0xz/" }, // ainda sem link definido
 ];
 
 // As palavras que ficam se alternando no nome grande da abertura.
