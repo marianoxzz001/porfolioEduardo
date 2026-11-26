@@ -40,6 +40,8 @@ const tema = createTheme({
       styleOverrides: {
         // Rolagem suave quando clica nos links do menu
         html: { scrollBehavior: "smooth" },
+        // Rede de segurança: nada empurra a página para os lados em telas pequenas
+        body: { overflowX: "clip" },
         // Ao pular para uma seção, deixa um espaço para o header fixo não cobrir o título
         "[id]": { scrollMarginTop: `${alturaCabecalho}px` },
       },

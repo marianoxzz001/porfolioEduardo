@@ -31,7 +31,7 @@ function Formulario() {
       sx={{
         bgcolor: cores.formularioFundo,
         border: `1px solid ${cores.formularioBorda}`,
-        p: 4.5,
+        p: { xs: 3, md: 4.5 },
       }}
     >
       <Typography sx={{ fontSize: 26, fontWeight: 500 }}>DEIXE UMA MENSAGEM</Typography>
@@ -101,8 +101,8 @@ function Contato() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-          gap: 8,
+          gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "repeat(2, minmax(0, 1fr))" },
+          gap: { xs: 6, md: 8 },
           px: { md: 12 },
           py: { xs: 6, md: 12 },
           alignItems: "start",
@@ -112,7 +112,12 @@ function Contato() {
         <Box>
           <Typography
             component="h2"
-            sx={{ fontSize: 58, fontWeight: 600, letterSpacing: "-2px", lineHeight: "62px" }}
+            sx={{
+              fontSize: "clamp(40px, 13vw, 58px)", // encolhe em tela pequena para não estourar a largura
+              fontWeight: 600,
+              letterSpacing: "-2px",
+              lineHeight: 1.07,
+            }}
           >
             VAMOS
             <br />
@@ -132,7 +137,8 @@ function Contato() {
               underline="none"
               sx={{
                 display: "block",
-                fontSize: 19,
+                fontSize: { xs: 16, md: 19 },
+                overflowWrap: "anywhere", // se o e-mail não couber, ele quebra em vez de empurrar a página
                 color: cores.textoClaro,
                 mt: 1.5,
                 "&:hover": { color: cores.textoForte },
@@ -157,7 +163,14 @@ function Contato() {
       {/* Rodapé (no Figma não tem linha em cima dele) */}
       <Box
         component="footer"
-        sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: 4 }}
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap", // em tela pequena o "voltar ao topo" desce para a linha de baixo
+          gap: 2,
+          py: 4,
+        }}
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Typography sx={{ fontSize: 30, fontWeight: 700, letterSpacing: "-2.5px" }}>EM</Typography>
